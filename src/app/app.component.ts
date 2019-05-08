@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-        username: ['', Validators.required],
+      username: ['', Validators.required],
         password: ['', Validators.required]
     });
 
@@ -55,12 +55,16 @@ export class AppComponent implements OnInit{
     if (this.loginForm.invalid) {
         return;
     }
-    console.log(this.loginForm.value);
     this.loading = true;
      this.AuthService.getUser().subscribe(
       (res: any)=>{
-        console.log(res);
+        const users = res.users;
+        const user = users.filter(user =>
+          user.username == this.loginForm.value.username
+        );
+        console.log(user);
         this.loading = false;
+        this.submitted = false;
         this.loginForm.reset();
       },
       (err: Response) =>{
