@@ -18,7 +18,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   public getUser(): Observable<any> {
-    return this.http.get("../../data.json");
+    return this.http.get("http://localhost:3000/users");
   }
 
   public addUser(user): Observable<User>{

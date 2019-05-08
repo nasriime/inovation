@@ -59,6 +59,8 @@ export class RegisterComponent implements OnInit {
       this.loading = true;
        this.AuthService.getUser().subscribe(
         (res: any)=>{
+          this.loading = false;
+          this.submitted = false;
           const users = res.users;
           console.log(users);
           const user = users.filter(user =>
@@ -66,12 +68,10 @@ export class RegisterComponent implements OnInit {
           );
           if(user.length){
             this.message = 'user is exist';
+            this.router.navigate(['/home']);
           }else{
             this.error = 'Error! please try again!'
           }
-          console.log(user);
-          this.loading = false;
-          this.submitted = false;
           this.loginForm.reset();
         },
         (err: Response) =>{
@@ -97,7 +97,7 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
           this.submitted = false;
           this.registrationForm.reset();
-          this.router.navigate(['/home']);
+          this.router.navigate(['/validate-number']);
         },
         (err: Response)=>{
           console.log(err);
