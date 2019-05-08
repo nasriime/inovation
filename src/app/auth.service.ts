@@ -10,6 +10,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   public getUser(): Observable<any> {
-    return this.http.get("/menu.json");
+    return this.http.get("../assets/data.json");
+  }
+
+  public addUser(body){
+    return this.http.post("../assets/data.json",body);
   }
 }

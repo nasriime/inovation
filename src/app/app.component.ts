@@ -20,7 +20,7 @@ export class AppComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private AuthenticationService: AuthService
+    private AuthService: AuthService
   ) {}
 
   ngOnInit() {
@@ -55,39 +55,63 @@ export class AppComponent implements OnInit{
     if (this.loginForm.invalid) {
         return;
     }
-
+    console.log(this.loginForm.value);
     this.loading = true;
-}
-
-onRegistrationSubmit() {
-  this.submitted = true;
-
-  // stop here if form is invalid
-  if (this.registrationForm.invalid) {
-      return;
+     this.AuthService.getUser().subscribe(
+      (res: any)=>{
+        console.log(res);
+        this.loading = false;
+        this.loginForm.reset();
+      },
+      (err: Response) =>{
+        console.log(err);
+      }
+    )
   }
 
-  this.loading = true;
-  
-}
+  onRegistrationSubmit() {
+    this.submitted = true;
 
-conditionalNumber() {
-  const number = this.registrationForm.get('number');
+    // stop here if form is invalid
+    if (this.registrationForm.invalid) {
+        return;
+    }
 
-  this.registrationForm.get('email').valueChanges
-    .subscribe(email => {
+    console.log(this.registrationForm.value);
+    const body = this.registrationForm.value
+    console.log(body);
 
-      if (email == '') {
-        number.setValidators([Validators.required]);
-      }
+    this.loading = true;
+    // this.registrationForm.reset();
 
-      if (email.length > 0) {
-        number.setValidators(null);
-      }
+    // this.AuthService.addUser().subscribe(
+    //   (res: any)=>{
+    //     console.log(res);
+    //     this.loading = false;
+    //   },
+    //   (err: Response) =>{
+    //     console.log(err);
+    //   }
+    // )
+  }
 
-      number.updateValueAndValidity();
-    });
-}
+  conditionalNumber() {
+    const number = this.registrationForm.get('number');
+
+    this.registrationForm.get('email').valueChanges
+      .subscribe(email => {
+
+        if (email == '') {
+          number.setValidators([Validators.required]);
+        }
+
+        if (email.length > 0) {
+          number.setValidators(null);
+        }
+
+        number.updateValueAndValidity();
+      });
+  }
 
 
 }
