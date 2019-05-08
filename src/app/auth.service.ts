@@ -1,19 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+export interface User {
+  username: string,
+  address: string,
+  authentication: string,
+  email: string,
+  number: string,
+  password: string
+}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public getUser(): Observable<any> {
     return this.http.get("../assets/data.json");
   }
 
-  public addUser(body){
-    return this.http.post("../assets/data.json",body);
+  public addUser(user): Observable<User>{
+    const headers = { headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      })
+    }
+    return this.http.post<User>("http://localhost:3000/", user, headers);
   }
 }

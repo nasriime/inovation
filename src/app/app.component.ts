@@ -59,6 +59,7 @@ export class AppComponent implements OnInit{
      this.AuthService.getUser().subscribe(
       (res: any)=>{
         const users = res.users;
+        console.log(users);
         const user = users.filter(user =>
           user.username == this.loginForm.value.username
         );
@@ -80,23 +81,21 @@ export class AppComponent implements OnInit{
     if (this.registrationForm.invalid) {
         return;
     }
-
-    console.log(this.registrationForm.value);
-    const body = this.registrationForm.value
-    console.log(body);
-
+    const body = this.registrationForm.value;
     this.loading = true;
     // this.registrationForm.reset();
 
-    // this.AuthService.addUser().subscribe(
-    //   (res: any)=>{
-    //     console.log(res);
-    //     this.loading = false;
-    //   },
-    //   (err: Response) =>{
-    //     console.log(err);
-    //   }
-    // )
+    this.AuthService.addUser(body).subscribe(
+      (res: any)=>{
+        console.log(res);
+        this.loading = false;
+        this.submitted = false;
+        this.registrationForm.reset();
+      },
+      (err: Response)=>{
+        console.log(err);
+      }
+    )
   }
 
   conditionalNumber() {
