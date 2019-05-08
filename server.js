@@ -3,7 +3,7 @@
 
 const express = require('express');
 const fs = require('fs');
-const jsondata = require('./src/assets/data');
+const jsondata = require('./data');
 
 const app = express()
 app.use(express.json());
@@ -18,10 +18,9 @@ app.use(function(req, res, next) {
 app.post('/', (req, res) => {
     console.log('jsondata', jsondata);
     jsondata.users.push(req.body);
-    fs.writeFile('./src/assets/data.json', JSON.stringify(jsondata), (err) => {
+    fs.writeFile('./data.json', JSON.stringify(jsondata), (err) => {
         if (err) throw err;
-        console.log('File written to JSON.json');
-        res.send('File written to JSON.json')
+        res.send({res: 'File written to JSON.json'})
     })
 });
 
